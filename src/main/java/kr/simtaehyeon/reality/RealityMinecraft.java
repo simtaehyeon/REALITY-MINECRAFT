@@ -177,9 +177,12 @@ public final class RealityMinecraft implements ModInitializer {
         BlockPos below = BlockPos.containing(player.getX(), player.getY() - 0.15, player.getZ());
         BlockState block = player.level().getBlockState(below);
         if (block.is(Blocks.STONECUTTER)) {
-            // 절단기 피해는 5틱 간격으로 적용되도록 일시 무적시간을 초기화한다.
-            player.setInvulnerableTime(0);
-            hurt(player, 1.0F);
+            // 바닐라 피격 쿨다운과 관계없이 5틱마다 체력을 1 감소시킨다.
+            if (player.level() instanceof ServerLevel level) {
+                float remainingHealth = player.getHealth() - 1.0F;
+                if (remainingHealth <= 0.0F) player.kill(level);
+                else player.setHealth(remainingHealth);
+            }
             if (tickCounter % 20 == 0) {
                 player.sendSystemMessage(Component.literal("§c석재 절단기에 올라서서 발을 다쳤다!"));
             }
