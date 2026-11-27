@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "id": "reality_minecraft",
+  "version": "${version}",
+  "name": "REALITY MINECRAFT",
+  "description": "A survival realism overhaul with thirst, fatigue, temperature and environmental hazards.",
+  "authors": ["simtaehyeon"],
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["kr.simtaehyeon.reality.RealityMinecraft"]
+  },
+  "depends": {
+    "fabricloader": ">=0.19.0",
+    "minecraft": "~26.3",
+    "java": ">=25",
+    "fabric-api": "*"
+  }
+}
