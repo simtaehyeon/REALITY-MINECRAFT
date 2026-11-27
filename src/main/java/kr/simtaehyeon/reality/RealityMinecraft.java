@@ -51,7 +51,7 @@ public final class RealityMinecraft implements ModInitializer {
         state.fatigue = Math.min(100, state.fatigue + 1);
         boolean wet = player.isInWaterOrRain();
         if (wet) state.temperature = Math.max(0, state.temperature - 1);
-        else if (player.level().getLevelData().getDayTime() % 24000L < 12000L) state.temperature = Math.min(100, state.temperature + 1);
+        else if (player.level().isBrightOutside()) state.temperature = Math.min(100, state.temperature + 1);
         else state.temperature = Math.max(0, state.temperature - 1);
         updateHeat(player, state, wet);
         if (state.thirst == 0 && tickCounter % 100 == 0) hurt(player, 1.0F);
