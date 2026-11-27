@@ -66,7 +66,6 @@ public final class RealityMinecraft implements ModInitializer {
 
         boolean wet = player.isInWaterOrRain();
         if (wet) state.bodyTemperature -= 0.025;
-        else if (player.level().isBrightOutside()) state.bodyTemperature += 0.005;
         else state.bodyTemperature += (36.5 - state.bodyTemperature) * 0.01;
 
         updateHeat(player, state, wet);
@@ -178,8 +177,12 @@ public final class RealityMinecraft implements ModInitializer {
         BlockPos below = BlockPos.containing(player.getX(), player.getY() - 0.15, player.getZ());
         BlockState block = player.level().getBlockState(below);
         if (block.is(Blocks.STONECUTTER)) {
+            // 기본 피해 무적시간에 막히지 않도록 절단기 피해를 5틱 간격으로 적용
+            player.invulnerableTime = 0;
             hurt(player, 1.0F);
-            player.sendSystemMessage(Component.literal("§c석재 절단기에 올라서서 발을 다쳤다!"));
+            if (tickCounter % 20 == 0) {
+                player.sendSystemMessage(Component.literal("§c석재 절단기에 올라서서 발을 다쳤다!"));
+            }
         }
     }
 
