@@ -51,7 +51,7 @@ public final class RealityMinecraft implements ModInitializer {
         state.fatigue = Math.min(100, state.fatigue + 1);
         boolean wet = player.isInWaterOrRain();
         if (wet) state.temperature = Math.max(0, state.temperature - 1);
-        else if (player.level().getDayTime() % 24000L < 12000L) state.temperature = Math.min(100, state.temperature + 1);
+        else if (player.level().getLevelData().getDayTime() % 24000L < 12000L) state.temperature = Math.min(100, state.temperature + 1);
         else state.temperature = Math.max(0, state.temperature - 1);
         updateHeat(player, state, wet);
         if (state.thirst == 0 && tickCounter % 100 == 0) hurt(player, 1.0F);
@@ -111,7 +111,10 @@ public final class RealityMinecraft implements ModInitializer {
     // 현재는 방어구 한 부위마다 열 노출을 12% 줄이는 기초 보호 계산이다.
     private static int getHeatArmorProtection(ServerPlayer player) {
         int protection = 0;
-        for (ItemStack stack : player.getArmorSlots()) if (!stack.isEmpty()) protection++;
+        for (net.minecraft.world.entity.EquipmentSlot slot : net.minecraft.world.entity.EquipmentSlot.values()) {
+            if (slot.getType() == net.minecraft.world.entity.EquipmentSlot.Type.HUMANOID_ARMOR
+                    && !player.getItemBySlot(slot).isEmpty()) protection++;
+        }
         return Math.min(4, protection);
     }
 
